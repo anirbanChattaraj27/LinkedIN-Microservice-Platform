@@ -71,3 +71,37 @@ flowchart TB
     ConnectionService -. Registers .-> Eureka
     NotificationService -. Registers .-> Eureka
     Gateway -. Service Discovery .-> Eureka
+
+
+
+🧩 Microservices
+👤 User Service
+
+Port: 9020
+
+Responsible for:
+
+User signup
+User login
+Password hashing
+JWT generation
+User validation
+Publishing user-related events
+Flow
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+sequenceDiagram
+    participant Client
+    participant UserService
+    participant PostgreSQL
+    participant Kafka
+
+    Client->>UserService: Signup Request
+    UserService->>UserService: Validate User
+    UserService->>UserService: Hash Password
+    UserService->>PostgreSQL: Save User
+    PostgreSQL-->>UserService: User Created
+    UserService->>Kafka: Publish UserCreatedEvent
+```
+
