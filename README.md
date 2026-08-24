@@ -178,3 +178,101 @@ sequenceDiagram
     Kafka->>ConnectionsService: Consume Event
     ConnectionsService->>Neo4j: Create Person Node
 ```
+
+
+🔔 ****Notification Service****
+
+Port: 9040
+
+The Notification Service consumes Kafka events asynchronously.
+
+It processes events such as:
+
+Post created
+Post liked
+*****Notification Flow*****
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+sequenceDiagram
+    participant PostsService
+    participant Kafka
+    participant NotificationService
+    participant PostgreSQL
+
+    PostsService->>Kafka: Publish Event
+    Kafka->>NotificationService: Consume Event
+    NotificationService->>PostgreSQL: Save Notification
+```
+
+
+🚪 API Gateway
+
+The API Gateway acts as the single entry point for client requests.
+
+    Client
+       ├── User Service
+       ├── Posts Service
+       └── Connections Service
+       
+The client communicates with:
+
+    Client
+       ↓
+    API Gateway
+       ↓
+    Appropriate Microservice
+
+The gateway is responsible for:
+
+    Request routing
+    JWT validation
+    Forwarding authenticated user information
+    Service discovery integration
+
+***Flow***
+
+    /api/v1/users/**
+
+        ↓
+
+    USER-SERVICE
+
+
+    /api/v1/posts/**
+    
+        ↓
+    
+    POSTS-SERVICE
+    
+    
+    /api/v1/connections/**
+    
+        ↓
+    
+    CONNECTIONS-SERVICE
+
+
+****🔎 Service Discovery with Eureka****
+
+In a microservices architecture, hardcoding service IP addresses creates tight coupling.
+This project uses Netflix Eureka for service discovery.
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart TB
+
+    Eureka[🔎 Eureka Server<br/>Port: 8761]
+
+    User[👤 User Service]
+    Posts[📝 Posts Service]
+    Connections[🤝 Connections Service]
+    Notification[🔔 Notification Service]
+    Gateway[🚪 API Gateway]
+
+    User --> Eureka
+    Posts --> Eureka
+    Connections --> Eureka
+    Notification --> Eureka
+    Gateway --> Eureka
+```
