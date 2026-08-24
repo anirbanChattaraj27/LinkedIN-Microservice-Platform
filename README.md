@@ -105,3 +105,40 @@ sequenceDiagram
     UserService->>Kafka: Publish UserCreatedEvent
 ```
 
+
+
+📝 Posts Service
+
+Port: 9010
+
+Responsible for:
+
+Creating posts
+Fetching posts
+Fetching posts by user
+Liking posts
+Unliking posts
+Publishing post-related events
+
+The Posts Service uses OpenFeign for synchronous communication with other services.
+
+Post Creation Flow
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+sequenceDiagram
+    participant Client
+    participant PostsService
+    participant PostgreSQL
+    participant ConnectionsService
+    participant Kafka
+
+    Client->>PostsService: Create Post
+    PostsService->>PostgreSQL: Save Post
+    PostgreSQL-->>PostsService: Post Saved
+
+    PostsService->>ConnectionsService: Get User Connections
+    ConnectionsService-->>PostsService: Connected Users
+
+    PostsService->>Kafka: Publish PostCreatedEvent
+```
+
