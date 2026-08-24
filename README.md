@@ -177,4 +177,4 @@ sequenceDiagram
     UserService->>Kafka: Publish UserCreatedEvent
     Kafka->>ConnectionsService: Consume Event
     ConnectionsService->>Neo4j: Create Person Node
-    ```
+```
