@@ -142,3 +142,24 @@ sequenceDiagram
     PostsService->>Kafka: Publish PostCreatedEvent
 ```
 
+🤝 Connections Service
+
+Port: 9030
+
+Responsible for managing professional relationships between users.
+
+Features include:
+
+Send connection request
+Accept connection request
+Reject connection request
+Find first-degree connections
+
+The service uses Neo4j because user relationships can naturally be represented as a graph
+
+Graph Representation
+    (User A) ── REQUESTED_TO ──> (User B)
+    
+    After accepting:
+    
+    (User A) ── CONNECTED_TO ── (User B)
