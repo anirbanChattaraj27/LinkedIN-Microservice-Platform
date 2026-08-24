@@ -276,3 +276,219 @@ flowchart TB
     Notification --> Eureka
     Gateway --> Eureka
 ```
+
+
+*****🔄 Microservice Communication******
+
+The project uses two communication patterns.
+
+****1️⃣ Synchronous Communication****
+
+Used when an immediate response is required.
+
+Technology:
+    REST APIs
+    OpenFeign
+
+Example:
+    
+    Posts Service
+          ↓
+    Connections Service
+          ↓
+    Get First-Degree Connections
+
+****2️⃣ Asynchronous Communication****
+
+Used for event-driven workflows where the producer does not need to wait for the consumer.
+
+Technology:
+
+Apache Kafka
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart LR
+
+    Producer[Producer Service]
+    Kafka[📨 Kafka Topic]
+    Consumer[Consumer Service]
+
+    Producer --> Kafka
+    Kafka --> Consumer
+```
+
+******📨 Event-Driven Architecture******
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart LR
+
+    A[User Signup]
+    B[User Service]
+    C[(PostgreSQL)]
+    D[UserCreatedEvent]
+    E[Kafka]
+    F[Connections Service]
+    G[(Neo4j)]
+
+    A --> B
+    B --> C
+    B --> D
+    D --> E
+    E --> F
+    F --> G
+```
+
+*****📝 Post Creation*****
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart LR
+
+    A[Create Post]
+    B[Posts Service]
+    C[(PostgreSQL)]
+    D[Connections Service]
+    E[Kafka]
+    F[Notification Service]
+
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    E --> F
+```
+
+
+*****🔐 Authentication & Security*****
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+sequenceDiagram
+
+    participant Client
+    participant UserService
+
+    Client->>UserService: Email + Password
+    UserService->>UserService: Validate Credentials
+    UserService->>UserService: Generate JWT
+    UserService-->>Client: JWT Token
+```
+
+*****🐳 Docker Deployment*****
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart LR
+
+    A[Spring Boot Service]
+    B[Maven Build]
+    C[JAR]
+    D[Docker Image]
+
+    A --> B
+    B --> C
+    C --> D
+```
+
+******🛠️ Technology Stack******
+
+    | Category                   | Technologies                |
+    | -------------------------- | --------------------------- |
+    | Language                   | Java                        |
+    | Backend Framework          | Spring Boot                 |
+    | Microservices              | Spring Cloud                |
+    | API Gateway                | Spring Cloud Gateway        |
+    | Service Discovery          | Netflix Eureka              |
+    | Synchronous Communication  | REST APIs, OpenFeign        |
+    | Asynchronous Communication | Apache Kafka                |
+    | Relational Database        | PostgreSQL                  |
+    | Graph Database             | Neo4j                       |
+    | ORM                        | Spring Data JPA / Hibernate |
+    | Graph Data Access          | Spring Data Neo4j           |
+    | Authentication             | JWT                         |
+    | Password Security          | BCrypt                      |
+    | Build Tool                 | Maven                       |
+    | Logging                    | SLF4J + Lombok              |
+    | Object Mapping             | ModelMapper                 |
+
+
+******☁️ Planned AWS Deployment*****
+
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+flowchart TB
+
+    Client[👤 Client]
+
+    ECS[☁️ AWS ECS / Fargate]
+
+    Gateway[🚪 API Gateway]
+    User[👤 User Service]
+    Posts[📝 Posts Service]
+    Connections[🤝 Connections Service]
+    Notification[🔔 Notification Service]
+
+    RDS[(🗄️ AWS RDS<br/>PostgreSQL)]
+
+    Aura[(🕸️ Neo4j AuraDB)]
+
+    Client --> Gateway
+
+    Gateway --> ECS
+
+    ECS --> User
+    ECS --> Posts
+    ECS --> Connections
+    ECS --> Notification
+
+    User --> RDS
+    Posts --> RDS
+    Notification --> RDS
+
+    Connections --> Aura
+```
+
+
+********🎯 Key Concepts Demonstrated********
+    Java & Spring Boot
+            │
+            ├── REST APIs
+            ├── Dependency Injection
+            ├── Layered Architecture
+            ├── JPA / Hibernate
+            ├── Transactions
+            └── Global Exception Handling
+    
+    Microservices
+            │
+            ├── API Gateway
+            ├── Service Discovery
+            ├── OpenFeign
+            └── Independent Services
+    
+    Apache Kafka
+            │
+            ├── Producers
+            ├── Consumers
+            ├── Topics
+            └── Event-Driven Communication
+    
+    Databases
+            │
+            ├── PostgreSQL
+            └── Neo4j
+    
+    Security
+            │
+            ├── JWT
+            └── Password Hashing
+    
+    Deployment
+            │
+            ├── Docker
+            ├── Amazon ECR
+            ├── AWS ECS / Fargate
+            ├── AWS RDS
+            └── Neo4j AuraDB
