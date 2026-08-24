@@ -71,7 +71,7 @@ flowchart TB
     ConnectionService -. Registers .-> Eureka
     NotificationService -. Registers .-> Eureka
     Gateway -. Service Discovery .-> Eureka
-
+```
 
 
 🧩 Microservices
