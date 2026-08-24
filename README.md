@@ -1,4 +1,4 @@
-# 🚀 LinkedIn Microservices Platform
+# 🚀 ******LinkedIn Microservices Platform******
 
 > A LinkedIn-inspired professional networking platform built using **Java, Spring Boot, Microservices, Apache Kafka, PostgreSQL, Neo4j, Spring Cloud Gateway, and Eureka**.
 
@@ -6,7 +6,7 @@ This project demonstrates how a modern backend application can be designed using
 
 ---
 
-## 📌 Overview
+## 📌 ****Overview****
 
 The platform is divided into multiple services based on business responsibilities.
 
@@ -24,7 +24,7 @@ It supports:
 
 ---
 
-# 🏗️ Architecture
+# 🏗️ **Architecture**
 
 ```mermaid
 flowchart TB
@@ -74,7 +74,7 @@ flowchart TB
 ```
 
 
-🧩 Microservices
+🧩 ***Microservices***
 👤 User Service
 
 Port: 9020
@@ -107,7 +107,7 @@ sequenceDiagram
 
 
 
-📝 Posts Service
+📝 **Posts Service**
 
 Port: 9010
 
@@ -122,7 +122,7 @@ Publishing post-related events
 
 The Posts Service uses OpenFeign for synchronous communication with other services.
 
-Post Creation Flow
+***Post Creation Flow***
 ```mermaid
 %%{init: {'theme': 'dark'}}%%
 sequenceDiagram
@@ -142,7 +142,7 @@ sequenceDiagram
     PostsService->>Kafka: Publish PostCreatedEvent
 ```
 
-🤝 Connections Service
+🤝 **Connections Service**
 
 Port: 9030
 
@@ -157,9 +157,24 @@ Find first-degree connections
 
 The service uses Neo4j because user relationships can naturally be represented as a graph
 
-Graph Representation
+*Graph Representation*
+
     (User A) ── REQUESTED_TO ──> (User B)
     
     After accepting:
     
     (User A) ── CONNECTED_TO ── (User B)
+
+***User Creation Event Flow***
+```mermaid
+%%{init: {'theme': 'dark'}}%%
+sequenceDiagram
+    participant UserService
+    participant Kafka
+    participant ConnectionsService
+    participant Neo4j
+
+    UserService->>Kafka: Publish UserCreatedEvent
+    Kafka->>ConnectionsService: Consume Event
+    ConnectionsService->>Neo4j: Create Person Node
+    ```
